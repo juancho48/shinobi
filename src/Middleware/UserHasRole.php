@@ -31,9 +31,9 @@ class UserHasRole
      *
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $role, $on = null)
     {
-        if (!$this->auth->user()->isRole($role)) {
+        if (!$this->auth->user()->isRole($role, $on)) {
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             }

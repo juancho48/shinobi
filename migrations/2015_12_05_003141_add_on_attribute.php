@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class AddSpecialRoleColumn extends Migration
+class AddOnAttribute extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class AddSpecialRoleColumn extends Migration
     public function up()
     {
         Schema::table('roles', function ($table) {
-            $table->enum('special', ['all-access', 'no-access', 'all-level'])->nullable();
+            $table->string('on')->nullable()->default(null);
         });
     }
 
@@ -24,7 +24,7 @@ class AddSpecialRoleColumn extends Migration
     public function down()
     {
         Schema::table('roles', function ($table) {
-            $table->dropColumn('special');
+            $table->dropColumn('on');
         });
     }
 }

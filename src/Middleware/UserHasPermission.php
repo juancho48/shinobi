@@ -32,10 +32,10 @@ class UserHasPermission
      *
      * @return mixed
      */
-    public function handle($request, Closure $next, $permissions)
+    public function handle($request, Closure $next, $permissions, $on = null)
     {
         if ($this->auth->check()) {
-            if (!$this->auth->user()->can($permissions)) {
+            if (!$this->auth->user()->canOn($permissions, $on)) {
                 if ($request->ajax()) {
                     return response('Unauthorized.', 403);
                 }
@@ -46,7 +46,7 @@ class UserHasPermission
             $guest = Role::whereSlug('guest')->first();
 
             if ($guest) {
-                if (!$guest->can($permissions)) {
+                if (!$guest->canOn($permissions, $on)) {
                     if ($request->ajax()) {
                         return response('Unauthorized.', 403);
                     }
