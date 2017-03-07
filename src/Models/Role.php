@@ -55,8 +55,8 @@ class Role extends Model
      */
     public function getPermissions()
     {
-        $primaryKey = $this->primaryKey;
-        $cacheKey = 'caffeinated.shinobi.permissions.' . $primaryKey;
+        $primaryKey = $this[$this->primaryKey];
+        $cacheKey   = 'caffeinated.shinobi.permissions.'.$primaryKey;
 
         if (method_exists(app()->make('cache')->getStore(), 'tags')) {
             return app()->make('cache')->tags($this->tag)->remember($cacheKey, 60, function () {
