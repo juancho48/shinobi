@@ -2,6 +2,8 @@
 
 namespace Caffeinated\Shinobi\Traits;
 
+use Caffeinated\Shinobi\Models\Role;
+
 trait ShinobiTrait
 {
     /*
@@ -78,6 +80,7 @@ trait ShinobiTrait
     public function assignRole($roleId = null, $on = null)
     {
         $roles = $this->roles;
+        $role = Role::findOrFail($roleId);
 
         if ($on === null) {
             if (!$roles->contains($roleId)) {
@@ -85,7 +88,7 @@ trait ShinobiTrait
             }
         } else {
             if (!$roles->where('role_id', $roleId)->where('role_on', $on)->first()) {
-                return $this->roles()->attach($roleId, ['role_on' => $on]);
+                return $this->roles()->attach($roleId, ['role_on' => $on, 'role_type' => $role->on]);
             }
         }
 
@@ -358,7 +361,7 @@ trait ShinobiTrait
         }
 
         // Handle canDoSomething() methods
-        if (starts_with($method, 'can') and $method !== 'can' and $method !== 'canOn' ) {
+        if (starts_with($method, 'can') and $method !== 'can' and $method !== 'canOn') {
             $permission = substr($method, 3);
             $permission = str_replace('_', '.', $permission);
 
